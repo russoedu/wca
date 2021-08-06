@@ -1,6 +1,6 @@
 import { Contact } from './Contact.js'
 import { Message } from './Message.js'
-import { Progress } from './Progress.js'
+import { Progress } from './Progress.js.js'
 
 const dateFormat = {
   DAY_MONTH_YEAR: 0,

@@ -1,0 +1,13 @@
+#drop-zone {
+  width: 70%;
+  border-width: thick;
+}
+
+.leave {
+  border-color: red;
+  border-style: dashed;
+}
+.enter {
+  border-color: blue;
+  border-style: dotted;
+}
