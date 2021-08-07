@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "standard",
+    "react-app",
+    "react-app/jest"
+  ],
+  "rules": {
+    "comma-dangle": [
+      "error",
+      "only-multiline"
+    ]
+  }
+}

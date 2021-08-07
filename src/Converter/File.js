@@ -14,9 +14,8 @@ class File {
   constructor (content) {
     this.content = content
     this.loaded = true
-    console.log(chalk.green.bold(`file loaded`))
+    console.log(chalk.green.bold('file loaded'))
   }
-
 
   /**
    * Convert the array to JSON and save the file
