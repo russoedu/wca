@@ -24,7 +24,7 @@ class Message {
      */
     this.contact = contact
 
-    if (!!content) {
+    if (content) {
       /**
        * @type {string}
        */
@@ -34,7 +34,7 @@ class Message {
     /**
      * @type {number}
      */
-    this.chars = !!chars ? chars : splitter.countGraphemes(content)
+    this.chars = chars || splitter.countGraphemes(content)
   }
 }
 

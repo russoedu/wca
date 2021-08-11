@@ -1,6 +1,16 @@
 #drop-zone {
   width: 70%;
   border-width: thick;
+  border-radius: 10px;
+}
+
+#drop-zone:focus-visible {
+  outline: none;
+}
+
+#drop-zone > p {
+  padding: 100px;
+  margin: 0;
 }
 
 .leave {
@@ -10,4 +20,18 @@
 .enter {
   border-color: blue;
   border-style: dotted;
+}
+
+.failure-toast {
+  top: calc(50% + 200px)!important;
+}
+
+
+#modal > div > div.modal-body > div > pre {
+  font-style: italic;
+  margin: 1rem;
+}
+
+#modal > div > div.modal-body > div > p {
+  margin: 0;
 }

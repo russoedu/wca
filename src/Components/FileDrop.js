@@ -1,37 +1,44 @@
 import React, { useState, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
 import { File } from '../Converter/File'
 import './FileDrop.css'
+import { Modal } from 'react-bootstrap'
 
-export function FileDrop () {
+export default function FileDrop ({ onSetFile }) {
   const [dropClass, setDropClass] = useState('leave')
-  const history = useHistory()
+  const [failureMessage, setFailureMessage] = useState('')
+  const [showFailure, setShowFailure] = useState(false)
 
-  const onDropAccepted = useCallback(async acceptedFiles => {
-    const content = await acceptedFiles[0].text()
-    const file = new File(content)
-    history.push({
-      pathname: '/analysis',
-      state: { file },
-    })
-  }, [history])
+  async function onDropAccepted (acceptedFiles) {
+    setShowFailure(false)
+    const fileData = acceptedFiles[0]
+    console.log(fileData)
+    const file = new File(await fileData.text(), fileData.name)
+    if (file.loaded) {
+      onSetFile(file)
+    } else {
+      setFailureMessage(file.error)
+      setShowFailure(true)
+    }
+  }
 
   const onDropRejected = useCallback(error => {
     const code = error[0].errors[0].code
-    let message = ''
     switch (code) {
       case 'too-many-files':
-        message = 'Only one file at once'
+        setFailureMessage('<p>Please choose only one chat file at once</p>')
+        setShowFailure(true)
         break
       case 'file-invalid-type':
-        message = 'Only .txt files can be analised'
+        setFailureMessage('<p>Please choose a .txt file to be analised</p>')
+        setShowFailure(true)
         break
       default:
-        message = 'Some error occoured'
+        setFailureMessage('<p>Sorry, an unknown error occoured</p>')
+        setShowFailure(true)
         break
     }
-    console.error(message)
   }, [])
 
   const onDragEnter = useCallback(() => {
@@ -50,18 +57,37 @@ export function FileDrop () {
     onDragEnter,
     onDragLeave,
   }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone(dropOptions)
 
   return (
     <>
       <div id='drop-zone' className={dropClass} {...getRootProps()}>
         <input {...getInputProps()} />
-          {
+        {
             isDragActive
               ? <p>Drop the files here ...</p>
               : <p>Click or drag 'n' drop here</p>
           }
       </div>
+      <Modal
+        show={showFailure}
+        onHide={() => setShowFailure(!showFailure)}
+        keyboard={false}
+        centered
+        id='modal'
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>ERROR</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div dangerouslySetInnerHTML={{ __html: failureMessage }} />
+        </Modal.Body>
+      </Modal>
     </>
   )
+}
+
+FileDrop.propTypes = {
+  onSetFile: PropTypes.func.isRequired,
 }

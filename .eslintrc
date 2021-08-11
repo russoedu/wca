@@ -5,9 +5,18 @@
     "react-app/jest"
   ],
   "rules": {
+    
     "comma-dangle": [
       "error",
       "only-multiline"
+    ],
+    "react/jsx-indent": [
+      "error",
+      2,
+      {
+        "checkAttributes": true,
+        "indentLogicalExpressions": true
+      }
     ]
   }
 }

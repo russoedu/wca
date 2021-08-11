@@ -1,31 +1,30 @@
 import { chartBase } from './chart-base.js'
 
-class Chart {
-  #chartData = null
+export class Chart {
   constructor (chartData) {
     this.html = chartBase
-    this.#chartData = chartData
-    this.#addChartData()
-    this.#addSeries()
+    this.chartData = chartData
+    this.addChartData()
+    this.addSeries()
   }
 
   /**
    * Replace CHART_DATA for the data on the final HTML
    */
-  #addChartData () {
+  addChartData () {
     const chartDataRegEx = /CHART_DATA/g
 
-    this.html = this.html.replace(chartDataRegEx, JSON.stringify(this.#chartData))
+    this.html = this.html.replace(chartDataRegEx, JSON.stringify(this.chartData))
   }
 
   /**
    * Replace CHART_SERIES by all the needed series on the final HTML
    */
-  #addSeries () {
+  addSeries () {
     const seriesRegEx = /CHART_SERIES/
     const messagesRegEx = /(.+?)_Messages$/g
     let series = ''
-    const items = this.#chartData[0]
+    const items = this.chartData[0]
     for (const key in items) {
       const messagesExec = messagesRegEx.exec(key)
 
@@ -54,5 +53,3 @@ class Chart {
     this.html = this.html.replace(seriesRegEx, series)
   }
 }
-
-export { Chart }

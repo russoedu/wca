@@ -1,26 +1,26 @@
 import React, { Suspense } from 'react'
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
+import { Container, Row } from 'react-bootstrap'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css'
-import { Analysis } from './Pages/Analysis'
 import { Home } from './Pages/Home'
+import { About } from './Pages/About'
+import { Header } from './Components/Header'
 
 function App () {
   return (
-    <>
-      <Router>
-        <header>
-          <Link to='/'>WhYMCA</Link>
-        </header>
-        <main>
+    <Router>
+      <Header></Header>
+      <Container fluid>
+        <Row>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
               <Route exact path='/' component={Home}/>
-              <Route exact path='/analysis' component={Analysis}/>
+              <Route exact path='/about' component={About}/>
             </Switch>
           </Suspense>
-        </main>
-      </Router>
-    </>
+        </Row>
+      </Container>
+    </Router>
   )
 }
 
