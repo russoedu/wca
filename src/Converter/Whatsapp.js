@@ -5,6 +5,14 @@ const dateFormat = {
   DAY_MONTH_YEAR: 0,
   MONTH_DAY_YEAR: 1,
 }
+
+function sleep (milliseconds) {
+  const date = Date.now()
+  let currentDate = null
+  do {
+    currentDate = Date.now()
+  } while (currentDate - date < milliseconds)
+}
 /**
  * Whatsapp messages manipulation class
  */
@@ -45,8 +53,8 @@ export class Whatsapp {
     this.file = file
   }
 
-  async setData ({ onSetBaseContent, onSetChatContent, onSplitMessages, onSetChartContacts, onSetMessagesForChartByDay, onSetMessagesForChartByMonth, onSetMessagesForChartByYear }) {
-    this.setBaseContent(this.file, onSetBaseContent)
+  setData ({ onSetBaseContent, onSetChatContent, onSplitMessages, onSetChartContacts, onSetMessagesForChartByDay, onSetMessagesForChartByMonth, onSetMessagesForChartByYear }) {
+    this.setBaseContent(onSetBaseContent)
     this.setMessages(onSetChatContent, onSplitMessages)
     this.setChartContacts(onSetChartContacts)
     this.setMessagesForChartByDay(onSetMessagesForChartByDay)
@@ -58,11 +66,9 @@ export class Whatsapp {
    * Read the file and set the base content
    * @param {import('./File.js').File} file The chat export file path
    */
-  setBaseContent (file, fn) {
-    // Replace all carriage returns by line breaks
-    fn(0)
-    this.content = file.content.replace(/\r\n/, '\n').replace(/\r/, '\n').split('\n')
-    fn(1)
+  setBaseContent (onSetBaseContent) {
+    this.content = this.file.content.replace(/\r\n/, '\n').replace(/\r/, '\n').split('\n')
+    onSetBaseContent(100)
   }
 
   /**
@@ -86,10 +92,10 @@ export class Whatsapp {
   setMessages (onSetChatContent, onSplitMessages) {
     // Read each line and put them as a string entry. If the line does not match
     // the messageRegEx, includes in the previus entry with a line break
-    const percentage = (this.content.length / 20).toFixed()
+    let percentage = Number((this.content.length / 100).toFixed())
     for (let i = 0; i < this.content.length; i++) {
       if (i % percentage === 0) {
-        onSetChatContent(i, this.content.length)
+        onSetChatContent(i)
       }
       const message = this.content[i]
       if (message.match(this.messageRegEx)) {
@@ -99,21 +105,21 @@ export class Whatsapp {
         this.messages[i - 1] += `\n${message}`
       }
     }
-
+    onSetChatContent(100)
     const contact = new Contact()
     const replacementsFileContent = []
 
     this.setDateFormat()
 
+    percentage = Number((this.messages.length / 100).toFixed())
     let i = 0
     // Replace each entry by the Message instance and remove the null entries
     this.messages = this.messages
       .map(m => {
         if (i % percentage === 0) {
-          onSplitMessages(i++, this.messages.length)
-        } else {
-          i++
+          onSplitMessages()
         }
+        i++
         const split = this.contentSplitRegex.exec(m)
         if (!split) {
           return null
@@ -136,6 +142,7 @@ export class Whatsapp {
         return new Message(date, cont, content)
       })
       .filter(messsage => messsage != null)
+    onSplitMessages(100)
 
     if (replacementsFileContent.length > 0) {
       Contact.saveReplacements(replacementsFileContent)
@@ -154,24 +161,33 @@ export class Whatsapp {
       console.log('setMessages must be executed before setChartContacts')
       throw (new Error())
     }
-    // let i = 0
+    const percentage = Number((this.messages.length / 100).toFixed())
+    let i = 0
     this.messages.forEach(message => {
-      // onSetChartContacts(i++, this.messages.length)
+      if (i % percentage === 0) {
+        onSetChartContacts()
+      }
+      i++
       const contact = message.contact.replace(/\s/g, '_') + '_'
       if (!this.contacts[contact + '_Chars']) {
         this.contacts[contact + 'Chars'] = 0
         this.contacts[contact + 'Messages'] = 0
       }
     })
+    onSetChartContacts(100)
   }
 
   /**
    * Creates the chart data by day
    */
   setMessagesForChartByDay (onSetMessagesForChartByDay) {
-    // let j = 0
+    const percentage = Number((this.messages.length / 100).toFixed())
+    let j = 0
     this.messages.forEach(message => {
-      // onSetMessagesForChartByDay(j++, this.messages.length)
+      if (j % percentage === 0) {
+        onSetMessagesForChartByDay()
+      }
+      j++
       const contact = message.contact.replace(/\s/g, '_') + '_'
       const splitted = message.date.split(' ')
       const date = splitted[0]
@@ -191,16 +207,21 @@ export class Whatsapp {
         this.chartDataByDay[i][contact + 'Messages'] += 1
       }
     })
+    onSetMessagesForChartByDay(100)
   }
 
   /**
    * Creates the chart data by month
    */
   setMessagesForChartByMonth (onSetMessagesForChartByMonth) {
-    // let j = 0
+    const percentage = Number((this.messages.length / 100).toFixed())
+    let j = 0
     const monthRegEx = /\d{2}\/(\d{2}\/\d{4})/
     this.messages.forEach(message => {
-      // onSetMessagesForChartByMonth(j++, this.messages.length)
+      if (j % percentage === 0) {
+        onSetMessagesForChartByMonth()
+      }
+      j++
       const contact = message.contact.replace(/\s/g, '_') + '_'
       const splitted = message.date.split(' ')
       const date = splitted[0].replace(monthRegEx, '$1')
@@ -220,16 +241,21 @@ export class Whatsapp {
         this.chartDataByMonth[i][contact + 'Messages'] += 1
       }
     })
+    onSetMessagesForChartByMonth(100)
   }
 
   /**
    * Creates the chart data by month
    */
   setMessagesForChartByYear (onSetMessagesForChartByYear) {
-    // let j = 0
+    const percentage = Number((this.messages.length / 100).toFixed())
+    let j = 0
     const yearRegEx = /\d{2}\/\d{2}\/(\d{4})/
     this.messages.forEach(message => {
-      // onSetMessagesForChartByYear(j++, this.messages.length)
+      if (j % percentage === 0) {
+        onSetMessagesForChartByYear()
+      }
+      j++
       const contact = message.contact.replace(/\s/g, '_') + '_'
       const splitted = message.date.split(' ')
       const date = splitted[0].replace(yearRegEx, '$1')
@@ -249,5 +275,6 @@ export class Whatsapp {
         this.chartDataByYear[i][contact + 'Messages'] += 1
       }
     })
+    onSetMessagesForChartByYear(100)
   }
 }

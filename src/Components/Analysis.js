@@ -1,90 +1,75 @@
-import React, { useState, useCallback } from 'react'
-import { ProgressBar } from 'react-bootstrap'
-import { Whatsapp } from '../Converter/Whatsapp'
+import React, { useState, useEffect } from 'react'
+import { Row, Col } from 'react-bootstrap'
 import './Analysis.css'
+import { Progress } from './Progress'
 
-export function Analysis ({ file, errorCb }) {
+export function Analysis ({ onError, whatsapp }) {
   const [baseContent, setBaseContent] = useState(0)
-  const [chatContent, setChatContent] = useState('Chat content: 0')
-  const [splitMessages, setSplitMessages] = useState('Splitting messages: 0')
-  const [chartContacts, setChartContacts] = useState('Chart contacts: 0')
-  const [messagesForChartByDay, setMessagesForChartByDay] = useState('Chart by day: 0')
-  const [messagesForChartByMonth, setMessagesForChartByMonth] = useState('Chart by month: 0')
-  const [messagesForChartByYear, setMessagesForChartByYear] = useState('Chart by year: 0')
+  const [chatContent, setChatContent] = useState(0)
+  const [splitMessages, setSplitMessages] = useState(0)
+  const [chartContacts, setChartContacts] = useState(0)
+  const [messagesForChartByDay, setMessagesForChartByDay] = useState(0)
+  const [messagesForChartByMonth, setMessagesForChartByMonth] = useState(0)
+  const [messagesForChartByYear, setMessagesForChartByYear] = useState(0)
 
-  // const onSetBaseContent = useEffect((current, total) => {
-  //   console.log(current, total)
-  //   setBaseContent((current / total) * 100)
-  //   console.log(current, total)
-  // }, [baseContent])
+  function onSetBaseContent (value) {
+    setBaseContent(value || baseContent + 1)
+  }
+  function onSetChatContent (value) {
+    setChatContent(value || chatContent + 1)
+  }
+  function onSplitMessages (value) {
+    setSplitMessages(value || splitMessages + 1)
+  }
+  function onSetChartContacts (value) {
+    setChartContacts(value || splitMessages + 1)
+  }
+  function onSetMessagesForChartByDay (value) {
+    setMessagesForChartByDay(value || splitMessages + 1)
+  }
+  function onSetMessagesForChartByMonth (value) {
+    setMessagesForChartByMonth(value || splitMessages + 1)
+  }
+  function onSetMessagesForChartByYear (value) {
+    setMessagesForChartByYear(value || splitMessages + 1)
+  }
+  const whatsappCallBacks = { onSetBaseContent, onSetChatContent, onSplitMessages, onSetChartContacts, onSetMessagesForChartByDay, onSetMessagesForChartByMonth, onSetMessagesForChartByYear }
 
-  const onSetChatContent = useCallback((current, total) => {
-    console.log(current, total)
-    setChatContent(`Chat content: ${current}, ${total}`)
+  useEffect(() => {
+    whatsapp.setData(whatsappCallBacks)
+    console.log(
+      baseContent,
+      chatContent,
+      splitMessages,
+      chartContacts,
+      messagesForChartByDay,
+      messagesForChartByMonth,
+      messagesForChartByYear,
+    )
   }, [])
-
-  const onSplitMessages = useCallback((current, total) => {
-    console.log(current, total)
-    setSplitMessages(`Splitting messages: ${current}, ${total}`)
-  }, [setSplitMessages])
-
-  const onSetChartContacts = useCallback((current, total) => {
-    console.log(current, total)
-    setChartContacts(`Chart contacts: ${current}, ${total}`)
-  }, [setChartContacts])
-
-  const onSetMessagesForChartByDay = useCallback((current, total) => {
-    console.log(current, total)
-    setMessagesForChartByDay(`Chart by day: ${current}, ${total}`)
-  }, [setMessagesForChartByDay])
-
-  const onSetMessagesForChartByMonth = useCallback((current, total) => {
-    console.log(current, total)
-    setMessagesForChartByMonth(`Chart by month: ${current}, ${total}`)
-  }, [setMessagesForChartByMonth])
-
-  const onSetMessagesForChartByYear = useCallback((current, total) => {
-    console.log(current, total)
-    setMessagesForChartByYear(`Chart by year: ${current}, ${total}`)
-  }, [setMessagesForChartByYear])
-
-  const whatsappCallBacks = { onSetBaseContent: setBaseContent, onSetChatContent, onSplitMessages, onSetChartContacts, onSetMessagesForChartByDay, onSetMessagesForChartByMonth, onSetMessagesForChartByYear }
-
-  const whatsapp = new Whatsapp(file, whatsappCallBacks)
-  console.log(whatsapp)
-  // useEffect(() => {
-  //   const whatsapp = new Whatsapp(file, whatsappCallBacks)
-  //   // // let whatsapp
-  //   // // try {
-  //   //   // const chartByDay = new Chart(whatsapp.chartDataByDay)
-  //   //   // const chartByMonth = new Chart(whatsapp.chartDataByMonth)
-  //   //   // const chartByYear = new Chart(whatsapp.chartDataByYear)
-  //   //   // const [dropClass, setDropClass] = useState('leave')
-  //   //   console.log(whatsapp)
-  //   // } catch (error) {
-  //   //   console.error('File not found, going back...')
-  //   //   whatsapp = null
-  //   //   error()
-  //   // }
-  //   // Update the document title using the browser API
-  // })
 
   return (
     <>
-      <p>
-        Analysing...
+      <Row>
+        <p>
+          Analysing...
 
-        What's happening?
-      </p>
-
-      <p>Base content:</p>
-      <ProgressBar now={baseContent} label={`${baseContent}%`}/>
-      <p>Chat content: {chatContent}</p>
-      <p>Splitting messages: {splitMessages}</p>
-      <p>Chart contacts: {chartContacts}</p>
-      <p>Chart by day: {messagesForChartByDay }</p>
-      <p>Chart by month: {messagesForChartByMonth}</p>
-      <p>Chart by year: {messagesForChartByYear}</p>
+          What's happening?
+        </p>
+      </Row>
+      <Row>
+        <Col xs={1}></Col>
+        <Col>
+          <Progress title = 'Base content' percentage={baseContent}></Progress>
+          <Progress title = 'Chat content' percentage={chatContent}></Progress>
+          <Progress title = 'Content split' percentage={splitMessages}></Progress>
+          <Progress title = 'Content split' percentage={chartContacts}></Progress>
+          <Progress title = 'Content split' percentage={messagesForChartByDay}></Progress>
+          <Progress title = 'Content split' percentage={messagesForChartByMonth}></Progress>
+          <Progress title = 'Content split' percentage={messagesForChartByYear}></Progress>
+        </Col>
+        <Col xs={1}></Col>
+      </Row>
     </>
   )
 }

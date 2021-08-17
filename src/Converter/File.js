@@ -15,7 +15,7 @@ class File {
     const exec = messageRegEx.exec(content)
     if (!exec) {
       this.loaded = false
-      this.error = `<p>"${name}" was not recognised as a Whatsap chat export. Please make sure the file text looks like:</p>
+      this.error = `<p>"${name}" was not recognised as a Whatsap chat export. Please make sure the file content looks like:</p>
 <pre>
 [23/02/2014, 21:37:37] ‎You were added
 [24/02/2014, 00:11:31] ‪+44 0 9999-999-999: I'm in!

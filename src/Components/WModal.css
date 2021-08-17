@@ -1,0 +1,8 @@
+#modal > div > div.modal-body > div > pre {
+  font-style: italic;
+  margin: 1rem;
+}
+
+#modal > div > div.modal-body > div > p {
+  margin: 0;
+}

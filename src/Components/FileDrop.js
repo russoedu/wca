@@ -1,53 +1,45 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
 import { File } from '../Converter/File'
 import './FileDrop.css'
-import { Modal } from 'react-bootstrap'
 
-export default function FileDrop ({ onSetFile }) {
-  const [dropClass, setDropClass] = useState('leave')
-  const [failureMessage, setFailureMessage] = useState('')
-  const [showFailure, setShowFailure] = useState(false)
+export default function FileDrop ({ onSetFile, onError }) {
+  const [dropClass, setDropClass] = useState('drop-out')
 
   async function onDropAccepted (acceptedFiles) {
-    setShowFailure(false)
     const fileData = acceptedFiles[0]
-    console.log(fileData)
     const file = new File(await fileData.text(), fileData.name)
     if (file.loaded) {
       onSetFile(file)
     } else {
-      setFailureMessage(file.error)
-      setShowFailure(true)
+      setDropClass('drop-out')
+      setError(file.error)
     }
   }
 
-  const onDropRejected = useCallback(error => {
-    const code = error[0].errors[0].code
-    switch (code) {
+  function onDropRejected (error) {
+    setDropClass('drop-out')
+    switch (error[0].errors[0].code) {
       case 'too-many-files':
-        setFailureMessage('<p>Please choose only one chat file at once</p>')
-        setShowFailure(true)
+        setError('<p>Please select only one chat file at once</p>')
         break
       case 'file-invalid-type':
-        setFailureMessage('<p>Please choose a .txt file to be analised</p>')
-        setShowFailure(true)
+        setError('<p>Please select a .txt file to be analised</p>')
         break
       default:
-        setFailureMessage('<p>Sorry, an unknown error occoured</p>')
-        setShowFailure(true)
+        setError('<p>Sorry, an unknown error occoured</p>')
         break
     }
-  }, [])
+  }
 
-  const onDragEnter = useCallback(() => {
-    setDropClass('enter')
-  }, [])
+  function onDragEnter () {
+    setDropClass('drop-in')
+  }
 
-  const onDragLeave = useCallback(() => {
-    setDropClass('leave')
-  }, [])
+  function onDragLeave () {
+    setDropClass('drop-out')
+  }
 
   const dropOptions = {
     accept: '.txt',
@@ -58,6 +50,10 @@ export default function FileDrop ({ onSetFile }) {
     onDragLeave,
   }
 
+  function setError (message) {
+    onError(message, 'ERROR')
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone(dropOptions)
 
   return (
@@ -66,28 +62,15 @@ export default function FileDrop ({ onSetFile }) {
         <input {...getInputProps()} />
         {
             isDragActive
-              ? <p>Drop the files here ...</p>
+              ? <p>Just drop :)</p>
               : <p>Click or drag 'n' drop here</p>
           }
       </div>
-      <Modal
-        show={showFailure}
-        onHide={() => setShowFailure(!showFailure)}
-        keyboard={false}
-        centered
-        id='modal'
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>ERROR</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div dangerouslySetInnerHTML={{ __html: failureMessage }} />
-        </Modal.Body>
-      </Modal>
     </>
   )
 }
 
 FileDrop.propTypes = {
   onSetFile: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired
 }
