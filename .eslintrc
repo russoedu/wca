@@ -1,11 +1,12 @@
 {
   "extends": [
-    "standard",
-    "react-app",
-    "react-app/jest"
+    "standard"
   ],
   "rules": {
-    
+    "quotemark": [
+      true,
+      "single"
+    ],
     "comma-dangle": [
       "error",
       "only-multiline"

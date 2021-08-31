@@ -1,4 +1,7 @@
-.bg-grey {
-  background-color: #282c34;
-  height: 80px;
+#language-dropdown {
+  cursor: default;
+}
+#language-dropdown:hover {
+  background-color: inherit;
+  color: inherit;
 }

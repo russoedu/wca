@@ -1,24 +1,3 @@
-#drop-zone {
-  width: 70%;
-  border-width: thick;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-#drop-zone:focus-visible {
-  outline: none;
-}
-
-#drop-zone > p {
-  padding: 100px;
-  margin: 0;
-}
-
-.drop-out {
-  border-color: rgb(183, 0, 255);
-  border-style: dashed;
-}
-.drop-in {
-  border-color: rgb(0, 255, 21);
-  border-style: dotted;
+#drop-zone-hidden-input {
+  display: none;
 }
