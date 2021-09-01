@@ -1,8 +1,12 @@
-import FileDrop, {FileDropError} from "../components/FileDrop";
-import Modal from "../components/Modal";
+import { createSignal } from 'solid-js';
+import FileDrop, { FileDropError } from '../components/FileDrop'
+import Modal from '../components/Modal'
 import './Home.css'
 
 export default function () {
+  const [modalMessage, setModalMessage] = createSignal('error')
+  const [modalTitle, setModalTitle] = createSignal('File upload error')
+  const [showModal, setShowModal] = createSignal(false)
   async function onDropAccepted (acceptedFiles: File[]) {
     console.log(acceptedFiles)
     // const fileData = acceptedFiles[0]
@@ -15,8 +19,14 @@ export default function () {
     // }
   }
 
-  function onDropRejected (error: FileDropError) {
+  function onDropRejected (error: FileDropError | string) {
     console.log(error)
+    if (error === FileDropError.INVALID_TYPE) {
+      setModalMessage('The selected file is not a Whatsapp message export. Please select a .txt file')
+    } else if (error === FileDropError.TOO_MANY_FILES) {
+      setModalMessage('Please select a single file.')
+    }
+    setShowModal(true)
   }
   return (
     <>
@@ -35,7 +45,7 @@ export default function () {
       onDropRejected={onDropRejected}
       maxFiles={1}
     ></FileDrop>
-    <Modal message='hellor' show={true} title='Olar' setShow='vamo'></Modal>
+    <Modal message={modalMessage} show={showModal} title={modalTitle} setShow={setShowModal}></Modal>
     </>
   )
 }

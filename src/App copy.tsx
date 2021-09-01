@@ -1,15 +1,16 @@
 import { Component, createSignal, onCleanup  } from 'solid-js';
-import { Router } from 'solid-app-router'
+import { Router } from "solid-app-router"
 import Progress from './components/Progress'
 
-import logo from './logo.svg';
+import logo from "./logo.svg";
 import styles from './App.module.css';
 import Header from './components/Header';
 
 const App: Component = () => {
   const [count, setCount] = createSignal(0)
   const timer = setInterval(() => setCount(count() + 1), 2)
-  function onCleanup(e) {
+  function onCleanup(e: Event) {
+    console.log(e)    
     clearInterval(timer)
   }
   return (

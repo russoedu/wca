@@ -1,4 +1,4 @@
-import { onMount, createSignal } from 'solid-js';
+import { onMount, createSignal } from 'solid-js'
 
 import './Footer.css'
 

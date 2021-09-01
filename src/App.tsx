@@ -1,13 +1,14 @@
-import { Component, createSignal, onCleanup  } from 'solid-js';
+import { Component  } from 'solid-js'
 import { Router, Routes, Route } from 'solid-app-router'
 
 import Home from './pages/Home'
 import About from './pages/About'
-import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound'
 
-import './App.css';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/Header'
+import Footer from './components/Footer'
+
+import './App.css'
 
 const App: Component = () => {
   return (

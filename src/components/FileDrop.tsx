@@ -3,9 +3,9 @@ import './FileDrop.css'
 declare type DropAcceptedFunction = (acceptedFiles: File[]) => any
 declare type DropRejectedFunction = (error: FileDropError | string) => any
 declare type FileDropOptions = {
-  normalText?: string,
-  draggingText?: string,
-  draggedText?: string
+  normalText?: string | null,
+  draggingText?: string | null,
+  draggedText?: string | null
   normalClass: string,
   draggingClass: string,
   draggedClass: string,
@@ -23,6 +23,9 @@ export enum FileDropError {
   TOO_MANY_FILES = 'TOO_MANY_FILES',
 }
 
+let inputRef: HTMLInputElement 
+let dragDivRef: HTMLInputElement
+
 export default function ({
   normalClass,
   draggingClass,
@@ -37,8 +40,6 @@ export default function ({
   onDropAccepted,
   onDropRejected,
   }: FileDropOptions) {
-  let inputRef: HTMLInputElement 
-  let dragDivRef: HTMLInputElement
 
   const [dropClass, setDropClass] = createSignal(normalClass)
 
@@ -81,14 +82,14 @@ export default function ({
    * If all the checks pass, calls "onDropAccepted" with the array of files
    * @param e {DragEvent}
    */
-  function onDrop (e: DragEvent): void {
+  function onDrop (e: DragEvent | Event): void {
     let files: File[]
-    if (e.type === 'drop') {
+    if (e instanceof DragEvent) {
       preventDefault(e)
       onDragLeave(e)
-      files = Object.values(e.dataTransfer.files)
+      files = Object.values(e.dataTransfer ? e.dataTransfer.files : [])
     } else {
-      files = Object.values(inputRef.files)
+      files = inputRef.files ? Object.values(inputRef.files) : []
     }
     if (files.length > maxFiles) {
       onDropRejected(FileDropError.TOO_MANY_FILES)

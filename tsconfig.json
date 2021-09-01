@@ -9,7 +9,11 @@
     "jsxImportSource": "solid-js",
     "types": [
       "vite/client"
-    ]
+    ],
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "newLine": "LF",
+    "strict": true,
   },
   "include": [
     "src/**/*"
