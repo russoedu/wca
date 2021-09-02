@@ -1,6 +1,6 @@
 {
   "name": "whymca",
-  "description": "WhYMCS (Whatsapp Yottabyte Message and Chat Analyser) reads Whatsapp chat exports and gives you plenty of options to analyse the results",
+  "description": "WhYMCA (Whatsapp Yottabyte Message and Chat Analyser) reads Whatsapp chat exports and gives you plenty of options to analyse the results",
   "version": "0.1.0",
   "scripts": {
     "start": "vite",
@@ -13,7 +13,9 @@
   "license": "MIT",
   "devDependencies": {
     "npm-check": "^5.9.2",
+    "rollup-plugin-output-manifest": "^2.0.0",
     "vite": "^2.5.1",
+    "vite-plugin-pwa": "^0.11.2",
     "vite-plugin-solid": "^2.0.1"
   },
   "dependencies": {

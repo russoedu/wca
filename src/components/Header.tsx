@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js'
 import { Link } from 'solid-app-router'
-import logo from './logo.svg';
+import logo from '../assets/logo.svg';
 import './Header.css'
 
 export default function () {
