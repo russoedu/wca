@@ -1,4 +1,4 @@
-import { onMount } from 'solid-js';
+import { onMount } from 'solid-js'
 import './Modal.css'
 declare type ModalOptions = {
   message: () => string,
@@ -28,12 +28,12 @@ export default function ({ message, title, show, setShow }: ModalOptions) {
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">{title}</p>
+          <button class="delete" aria-label="close" onclick={hideModal}></button>
         </header>
         <section class="modal-card-body">
-          {message}
+          <div innerHTML={message()}></div>
         </section>
       </div>
-      <button class="modal-close is-large" aria-label="close" onclick={hideModal}></button>
     </div>
   )
 }

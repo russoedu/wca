@@ -1,15 +1,20 @@
 import { createSignal } from 'solid-js';
-import FileDrop, { FileDropError } from '../components/FileDrop'
+import { FileDrop } from '../components/FileDrop'
 import Modal from '../components/Modal'
+import { SolidDropzoneError } from '../components/SolidDropzone';
+import { WhatsappFile } from '../converter/WhatsappFile';
+// import { File } from '../Converter/File'
 import './Home.css'
 
 export default function () {
   const [modalMessage, setModalMessage] = createSignal('error')
   const [modalTitle, setModalTitle] = createSignal('File upload error')
   const [showModal, setShowModal] = createSignal(false)
-  async function onDropAccepted (acceptedFiles: File[]) {
-    console.log(acceptedFiles)
-    // const fileData = acceptedFiles[0]
+
+  async function onDropAccepted (file: WhatsappFile) {
+    console.log(file);
+    
+    
     // const file = new File(await fileData.text(), fileData.name)
     // if (file.loaded) {
     //   onSetFile(file)
@@ -19,31 +24,16 @@ export default function () {
     // }
   }
 
-  function onDropRejected (error: FileDropError | string) {
+  function onDropRejected (error: string) {
     console.log(error)
-    if (error === FileDropError.INVALID_TYPE) {
-      setModalMessage('The selected file is not a Whatsapp message export. Please select a .txt file')
-    } else if (error === FileDropError.TOO_MANY_FILES) {
-      setModalMessage('Please select a single file.')
-    }
+    setModalMessage(error)
     setShowModal(true)
   }
   return (
     <>
-    <h1 class="title">
-      Load a chat export text file to start.
-    </h1>
     <FileDrop
-      normalText="Click or drag 'n' drop here"
-      draggingText="Just drop :)"
-      draggedText="done"
-      normalClass="drop-normal"
-      draggingClass="drop-dragging"
-      draggedClass="drop-dragged"
-      accept='.txt'
-      onDropAccepted={onDropAccepted}
-      onDropRejected={onDropRejected}
-      maxFiles={1}
+      onSuccess={onDropAccepted}
+      onError={onDropRejected}
     ></FileDrop>
     <Modal message={modalMessage} show={showModal} title={modalTitle} setShow={setShowModal}></Modal>
     </>

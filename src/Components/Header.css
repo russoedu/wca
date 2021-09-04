@@ -1,7 +1,32 @@
-#language-dropdown {
-  cursor: default;
+.navbar-style {
+  background-color: hsl(269deg 97% 29%)!important;
 }
-#language-dropdown:hover {
-  background-color: inherit;
-  color: inherit;
+
+#language-dropdown{
+  cursor: default;
+    
+  background-color: inherit!important;
+  color: inherit!important;
+}
+@media screen and (max-width: 1023px) {
+  #language-dropdown{
+    font-style: italic;
+    background-color: hsl(269deg 97% 29%)!important;
+    color: #d8d8d8!important;
+  }
+}
+
+
+.item-style  {
+  color: #d8d8d8;
+}
+
+.item-style:hover {
+  background-color: #FFF!important;
+  color: rgb(72, 2, 146)!important;
+}
+.is-boxed {
+  top: 53px!important;
+  border-top-left-radius: 0!important;
+  border-top-right-radius: 0!important;
 }

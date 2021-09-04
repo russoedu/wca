@@ -3,10 +3,10 @@
   color: #fff;
 }
 .copyright:hover {
-  color: #3384ff;
+  color: #cc00ff;
 }
 .footer {
-  background-color: #363636;
+  background-color: hsl(269deg 97% 29%)!important;
   position: fixed;
   bottom: 0;
   left: 0;
