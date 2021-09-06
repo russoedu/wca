@@ -11,10 +11,14 @@ export default function ({ title, value }: {
   return (
     <div class="columns">
       <div class="column is-one-third">
-        {title} {getFixed()}
+        {title}
       </div>
       <div class="column">
-        <progress class="progress is-large is-info" value={getFixed()} max="100">{getFixed()}%</progress>
+        <progress class="progress is-large is-info has-info" value={getFixed()} max="100">
+        </progress>
+        <div class="progress-info">
+          {getFixed()}%
+        </div>
       </div>
     </div>
   )

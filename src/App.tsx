@@ -16,7 +16,7 @@ const App: Component = () => {
       <Router>
         <Header></Header>
         <div class='main columns'>
-          <div class="column is-desktop is-three-fifths is-offset-one-fifth">
+          <div class="column is-desktop is-10 is-offset-1">
             <Routes>
               <Route path="/about" element={<About />} />
               <Route path="/" element={<Home />} />

@@ -1,1 +1,11 @@
+.has-info {
+  padding: 0;
+  margin: 0!important;
+}
 
+.progress-info {
+  position: relative;
+  bottom: 1.5rem;
+  color: white;
+  font-weight: bold;
+}

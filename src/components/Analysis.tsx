@@ -37,9 +37,6 @@ export function Analysis ({ file }: { file: WhatsappFile }){
   })
   return (
     <div>
-      <h1>
-        File length: {file.content.length}
-      </h1>
       <Progress title="Replacing line breaks" value={lineBreaks}></Progress>
       <Progress title="Splitting the messages" value={splitMessages}></Progress>
       <Progress title="Formatting messages" value={formattedMessages}></Progress>

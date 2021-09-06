@@ -42,7 +42,7 @@ export default function () {
           ></FileDrop>
         </Match>
         <Match when={whatsapp.loaded}>
-          <h1 class="title">File is set</h1>
+          <h1 class="title">Processing the chat file</h1>
           <Analysis file={whatsapp}></Analysis>
           <button class="button is-large is-link" onclick={() => setWhatsapp(new WhatsappFile())}>load another one</button>
         </Match>
