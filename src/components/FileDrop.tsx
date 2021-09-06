@@ -10,21 +10,17 @@ export function FileDrop ({
   onError: (error: string) => void
 }) {
   async function onDropAccepted (acceptedFiles: File[]) {
-    console.log(i++)
     const fileData = acceptedFiles?.[0]
     
     const file = new WhatsappFile(await fileData.text(), fileData.name)
     if (file.loaded) {
       onSuccess(file)
     } else {
-      console.log(i++)
       onError(file.error)
     }
   }
 
   function onDropRejected (error: SolidDropzoneError) {
-    console.log(i++)
-    
     if (error === SolidDropzoneError.INVALID_TYPE) {
       onError('<p>The selected file is not a Whatsapp message export.</p><p>Please select a .txt file that is usually called "_chat.txt"</p>')
     } else if (error === SolidDropzoneError.TOO_MANY_FILES) {
@@ -34,10 +30,6 @@ export function FileDrop ({
     }
   }
   return (
-    <>
-    <h1 class="title">
-      Load a chat export text file to start.
-    </h1>
     <SolidDropzone
       normalText="Click or drag 'n' drop here"
       draggingText="Just drop :)"
@@ -50,6 +42,5 @@ export function FileDrop ({
       onDropRejected={onDropRejected}
       maxFiles={1}
     ></SolidDropzone>
-    </>
   )
 }

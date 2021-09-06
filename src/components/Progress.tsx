@@ -1,20 +1,20 @@
 import { Accessor } from 'solid-js'
-import './Progress.module.css'
+import './Progress.css'
 
-type progressData = {
-  id: string,
+export default function ({ title, value }: {
   title: string,
-  val: Accessor<number>
-}
-
-export default function ({ id, title, val }: progressData) {
+  value: Accessor<number>
+}) {
+  function getFixed (): number {
+    return Number(value().toFixed(2))
+  }
   return (
     <div class="columns">
       <div class="column is-one-third">
-        {title} {val()}
+        {title} {getFixed()}
       </div>
       <div class="column">
-        <progress id={id} class="progress is-large is-info" value={val()} max="10000">{val()}%</progress>
+        <progress class="progress is-large is-info" value={getFixed()} max="100">{getFixed()}%</progress>
       </div>
     </div>
   )

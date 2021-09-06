@@ -1,6 +1,6 @@
 import fs from 'fs'
 import csvStringify from 'csv-stringify'
-import * as Buffer from 'buffer'
+import { Message } from './Message'
 
 const folder = './WhatsappConversion/'
 /**
@@ -11,10 +11,9 @@ export class WhatsappFile {
   error: string = ''
   content: string = ''
   /**
-   * Create a file intance
-   * @param {object[]} acceptedFiles The chat export path
+   * Create a WhatsappFile intance
    */
-  constructor (content: string, name: string) {
+  constructor (content: string = '', name: string = '') {
     const messageRegEx = /(\[\d{2}\/\d{2}\/\d{4},\s\d{2}:\d{2}:\d{2}\])\s/gm
     const exec = messageRegEx.exec(content)
     if (!exec) {
@@ -35,10 +34,8 @@ export class WhatsappFile {
 
   /**
    * Convert the array to JSON and save the file
-   * @param {import('./Message.js').Message[]} data
-   * @param {string} name
    */
-  static saveJson (data: string[], name: string) {
+  static saveJson (data: Message[], name: string) {
     fs.writeFileSync(folder + name, JSON.stringify(data, null, 2))
   }
 

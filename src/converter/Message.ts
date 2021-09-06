@@ -1,9 +1,14 @@
 import GraphemeSplitter from 'grapheme-splitter'
+import { Contact } from './Contact'
 
 /**
  * Whatsapp message class
  */
 class Message {
+  date: string
+  contact: Contact
+  content: string
+  chars: number
   /**
    *
    * @param {string} date The message date
@@ -12,28 +17,11 @@ class Message {
    * @param {number} [chars=null] The number of chars of the message
    * @instance { date: string, contact:string, chars: number, content?:string }
    */
-  constructor (date, contact, content = null, chars = null) {
+  constructor (date: string, contact: Contact, content: string = '', chars = null) {
     const splitter = new GraphemeSplitter()
-
-    /**
-     * @type {string}
-     */
     this.date = date
-    /**
-     * @type {string}
-     */
     this.contact = contact
-
-    if (content) {
-      /**
-       * @type {string}
-       */
-      this.content = content
-    }
-
-    /**
-     * @type {number}
-     */
+    this.content = content
     this.chars = chars || splitter.countGraphemes(content)
   }
 }
